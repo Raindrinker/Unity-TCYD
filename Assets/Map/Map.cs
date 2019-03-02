@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Cards;
 using UnityEngine;
+using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.UI;
 
 public class Map : MonoBehaviour
@@ -9,15 +10,18 @@ public class Map : MonoBehaviour
 
     public GameObject heroGO;
     public GameObject potGO;
+    public GameObject diamondCrystalGO;
 
     public GameObject floorTileGO;
 
 
 
-    private Tile[,] tiles = new Tile[5,6];
+    private Tile[,] tiles = new Tile[5,5];
     private float tileSeparation = 3.0f;
+    
+    private List<Unit> units = new List<Unit>();
 
-    private Unit hero;
+    private Hero hero;
 
     // Start is called before the first frame update
     void Start()
@@ -33,20 +37,19 @@ public class Map : MonoBehaviour
             }
         }
     
-        hero = Instantiate(heroGO).GetComponent<Unit>();
-        moveUnitToTile(hero, tiles[1,1]);
+        hero = Instantiate(heroGO).GetComponent<Hero>();
+        moveUnitToTile(hero, tiles[2,2]);
         
-        Unit pot = Instantiate(potGO).GetComponent<Unit>();
-        moveUnitToTile(pot, tiles[3,3]);
+        spawnUnit(diamondCrystalGO, 0, 0);
+        spawnUnit(diamondCrystalGO, 4, 0);
+        spawnUnit(diamondCrystalGO, 0, 4);
+        spawnUnit(diamondCrystalGO, 4, 4);
         
-        pot = Instantiate(potGO).GetComponent<Unit>();
-        moveUnitToTile(pot, tiles[0,4]);
+        spawnUnit(potGO, 1, 1);
+        spawnUnit(potGO, 3, 3);
+        spawnUnit(potGO, 1, 3);
+        spawnUnit(potGO, 3, 1);
         
-        pot = Instantiate(potGO).GetComponent<Unit>();
-        moveUnitToTile(pot, tiles[2,0]);
-        
-        pot = Instantiate(potGO).GetComponent<Unit>();
-        moveUnitToTile(pot, tiles[4,5]);
     }
 
     public Vector2 tileToPos(int xtile, int ytile)
@@ -130,9 +133,30 @@ public class Map : MonoBehaviour
         unit.setTile(t);
     }
 
-    public Unit getHero()
+    public Hero getHero()
     {
         return hero;
+    }
+
+    private void spawnUnit(GameObject unitGO, int xpos, int ypos)
+    {
+        Unit unit = Instantiate(unitGO).GetComponent<Unit>();
+        moveUnitToTile(unit, tiles[xpos, ypos]);
+        units.Add(unit);
+    }
+
+    public void takeUnitsTurn()
+    {
+        Debug.Log("Units turn, num units: " + units.Count);
+        
+        foreach (Unit u in units)
+        {
+            if (u != null)
+            {
+                Debug.Log("UNIT");
+                u.takeTurn();
+            }
+        }
     }
 }
 

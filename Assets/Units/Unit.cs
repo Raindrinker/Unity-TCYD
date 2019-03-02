@@ -1,10 +1,21 @@
+using System;
 using System.Runtime.Remoting.Messaging;
 using UnityEngine;
+using Random = System.Random;
 
-    
 public class Unit : MonoBehaviour
 {
-    private Tile tile;
+    protected Map map;
+    protected Tile tile;
+    
+    protected Random rand = new Random(Guid.NewGuid().GetHashCode());
+
+    protected int health = 1;
+
+    public void Start()
+    {
+        map = GameObject.Find("Map").GetComponent<Map>();
+    }
     
     public Tile getTile()
     {
@@ -21,6 +32,20 @@ public class Unit : MonoBehaviour
     {
         tile.setUnit(null);
         Destroy(gameObject);
+    }
+
+    public virtual void takeTurn()
+    {
+        
+    }
+
+    public virtual void takeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            destroy();
+        }
     }
 }
 

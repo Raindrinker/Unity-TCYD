@@ -22,7 +22,7 @@ namespace Cards
             return Resources.Load <Sprite> ("CardSprites/" + imageName);
         }
 
-        public virtual void use(GameObject card, DeckManager deckManager, Map map, Unit hero)
+        public virtual void use(GameObject card, DeckManager deckManager, Map map, Hero hero)
         {
             Tile t;
             if (useOnTile)
@@ -36,12 +36,12 @@ namespace Cards
                     }
                     else
                     {
-                        Debug.Log("INVALID TILE");
+                        //Debug.Log("INVALID TILE");
                     }
                 }
                 else
                 {
-                    Debug.Log("NULL TILE");
+                    //Debug.Log("NULL TILE");
                 }
             }
             else
@@ -50,12 +50,12 @@ namespace Cards
             }
         }
 
-        public virtual bool isTileValid(Map map, Unit hero, Tile t)
+        public virtual bool isTileValid(Map map, Hero hero, Tile t)
         {
             return false;
         }
 
-        protected virtual void effect(GameObject card, DeckManager deckManager, Map map, Unit hero, Tile t)
+        protected virtual void effect(GameObject card, DeckManager deckManager, Map map, Hero hero, Tile t)
         {
             Debug.Log("Use " + cardName);
         }

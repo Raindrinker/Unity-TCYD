@@ -13,7 +13,7 @@ namespace Cards
             useOnTile = true;
         }
         
-        public override bool isTileValid(Map map, Unit hero, Tile t)
+        public override bool isTileValid(Map map, Hero hero, Tile t)
         {
             if (!t.isWalkable())
             {
@@ -23,17 +23,17 @@ namespace Cards
             Vector2 heroPos = map.getHeroPos();
             Vector2 tilePos = map.getPosFromWorldPosition(t.transform.position);
             
-            Debug.Log("TILE POS: " + tilePos.x + ", " + tilePos.y);
-            
             return Vector2.Distance(heroPos, tilePos) == 1;
            
         }
         
-        protected override void effect(GameObject card, DeckManager deckManager, Map map, Unit hero, Tile t)
+        protected override void effect(GameObject card, DeckManager deckManager, Map map, Hero hero, Tile t)
         {
             map.moveUnitToTile(hero, t);
 
             card.GetComponent<Card>().discard();
+            
+            map.takeUnitsTurn();
         }
 
     }

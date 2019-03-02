@@ -15,11 +15,13 @@ public class DeckManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (var i = 0; i < 3; i++)
+        for (var i = 0; i < 4; i++)
         {
             deck.Add(new CardStep());
         }
         deck.Add(new CardSlash());
+        deck.Add(new CardSlash());
+        deck.Add(new CardQuickstep());
         
         foreach (var card in deck)
         {

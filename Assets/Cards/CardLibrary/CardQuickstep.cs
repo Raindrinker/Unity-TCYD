@@ -2,40 +2,37 @@ using UnityEngine;
 
 namespace Cards
 {
-    public class CardSlash : CardInfo
+    public class CardQuickstep : CardInfo
     {
-        
-        public CardSlash()
+
+        public CardQuickstep()
         {
-            cardName = "Slash";
-            imageName = "slash";
+            cardName = "Quickstep";
+            imageName = "quickstep";
 
             useOnTile = true;
         }
         
         public override bool isTileValid(Map map, Hero hero, Tile t)
         {
+            if (!t.isWalkable())
+            {
+                return false;
+            }
+            
             Vector2 heroPos = map.getHeroPos();
             Vector2 tilePos = map.getPosFromWorldPosition(t.transform.position);
             
-            Debug.Log("TILE POS: " + tilePos.x + ", " + tilePos.y);
-            
             return Vector2.Distance(heroPos, tilePos) == 1;
+           
         }
         
         protected override void effect(GameObject card, DeckManager deckManager, Map map, Hero hero, Tile t)
         {
-            var slash = GameObject.Instantiate(hero.slashPrefab, hero.transform);
-            slash.transform.position = t.transform.position;
-            
-            if (t.getUnit() != null)
-            {
-                t.getUnit().takeDamage(1);
-            }
+            map.moveUnitToTile(hero, t);
 
             card.GetComponent<Card>().discard();
-            
-            map.takeUnitsTurn();
         }
+
     }
 }
