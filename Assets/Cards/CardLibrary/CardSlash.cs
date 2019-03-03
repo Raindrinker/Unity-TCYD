@@ -25,7 +25,7 @@ namespace Cards
         
         protected override void effect(GameObject card, DeckManager deckManager, Map map, Hero hero, Tile t)
         {
-            var slash = GameObject.Instantiate(hero.slashPrefab, hero.transform);
+            var slash = GameObject.Instantiate(hero.slashPrefab, t.transform);
             slash.transform.position = t.transform.position;
             
             if (t.getUnit() != null)

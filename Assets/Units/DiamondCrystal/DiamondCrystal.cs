@@ -65,7 +65,7 @@ public class DiamondCrystal : Unit
 
     private void doAttack()
     {
-        GameObject thunder = Instantiate(thunderGO, transform);
+        GameObject thunder = Instantiate(thunderGO, targetTile.transform);
         thunder.transform.position = targetTile.transform.position;
         
         Unit unit = targetTile.getUnit();

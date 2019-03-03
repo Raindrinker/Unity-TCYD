@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using Cards;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Map : MonoBehaviour
 {
 
-    public GameObject heroGO;
-    public GameObject potGO;
-    public GameObject diamondCrystalGO;
-
-    public GameObject floorTileGO;
+    public GameObject heroPrefab;
+    public GameObject potPrefab;
+    public GameObject diamondCrystalPrefab;
+    public GameObject slimePrefab;
+    
+    public GameObject floorTilePrefab;
 
 
 
@@ -30,25 +32,27 @@ public class Map : MonoBehaviour
         {
             for (var j = 0; j < tiles.GetLength(1); j++)
             {
-                var tile = Instantiate(floorTileGO, transform, true).GetComponent<Tile>();
+                var tile = Instantiate(floorTilePrefab, transform, true).GetComponent<Tile>();
                 
                 tile.SetWorldPosition(tileToPos(i, j));
                 tiles[i, j] = tile;
             }
         }
     
-        hero = Instantiate(heroGO).GetComponent<Hero>();
-        moveUnitToTile(hero, tiles[2,2]);
+        hero = Instantiate(heroPrefab).GetComponent<Hero>();
+        moveUnitToTile(hero, tiles[0,2]);
         
-        spawnUnit(diamondCrystalGO, 0, 0);
-        spawnUnit(diamondCrystalGO, 4, 0);
-        spawnUnit(diamondCrystalGO, 0, 4);
-        spawnUnit(diamondCrystalGO, 4, 4);
+        spawnUnit(potPrefab, 0, 0);
+        spawnUnit(potPrefab, 0, 4);
+        spawnUnit(diamondCrystalPrefab, 4, 0);
+        spawnUnit(diamondCrystalPrefab, 4, 4);
         
-        spawnUnit(potGO, 1, 1);
-        spawnUnit(potGO, 3, 3);
-        spawnUnit(potGO, 1, 3);
-        spawnUnit(potGO, 3, 1);
+        spawnUnit(slimePrefab, 3, 1);
+        spawnUnit(slimePrefab, 3, 3);
+        
+        //spawnUnit(potPrefab, 1, 1);
+        //spawnUnit(potPrefab, 1, 3);
+        //spawnUnit(potPrefab, 3, 1);
         
     }
 
