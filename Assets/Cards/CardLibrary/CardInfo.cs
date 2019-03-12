@@ -34,14 +34,6 @@ namespace Cards
                     {
                         effect(card, deckManager, map, hero, t);
                     }
-                    else
-                    {
-                        //Debug.Log("INVALID TILE");
-                    }
-                }
-                else
-                {
-                    //Debug.Log("NULL TILE");
                 }
             }
             else

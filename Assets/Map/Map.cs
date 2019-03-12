@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Cards;
+using DefaultNamespace;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.Serialization;
@@ -16,7 +17,7 @@ public class Map : MonoBehaviour
     
     public GameObject floorTilePrefab;
 
-
+    private MapModel mapModel;
 
     private Tile[,] tiles = new Tile[5,5];
     private float tileSeparation = 3.0f;
@@ -28,6 +29,8 @@ public class Map : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mapModel = new MapModel();
+        
         for (var i = 0; i < tiles.GetLength(0); i++)
         {
             for (var j = 0; j < tiles.GetLength(1); j++)
@@ -41,18 +44,11 @@ public class Map : MonoBehaviour
     
         hero = Instantiate(heroPrefab).GetComponent<Hero>();
         moveUnitToTile(hero, tiles[0,2]);
-        
-        spawnUnit(potPrefab, 0, 0);
-        spawnUnit(potPrefab, 0, 4);
-        spawnUnit(diamondCrystalPrefab, 4, 0);
-        spawnUnit(diamondCrystalPrefab, 4, 4);
-        
-        spawnUnit(slimePrefab, 3, 1);
-        spawnUnit(slimePrefab, 3, 3);
-        
-        //spawnUnit(potPrefab, 1, 1);
-        //spawnUnit(potPrefab, 1, 3);
-        //spawnUnit(potPrefab, 3, 1);
+
+        foreach (UnitModel unitModel in mapModel.GetUnits())
+        {
+            spawnUnit(unitModel.type, unitModel.pos.x, unitModel.pos.y);
+        }
         
     }
 
@@ -142,8 +138,19 @@ public class Map : MonoBehaviour
         return hero;
     }
 
-    private void spawnUnit(GameObject unitGO, int xpos, int ypos)
+    private void spawnUnit(UnitModel.UnitType type, int xpos, int ypos)
     {
+        GameObject unitGO = potPrefab;
+        switch (type)
+        {
+            case UnitModel.UnitType.Slime:
+                unitGO = slimePrefab;
+                break;
+            case UnitModel.UnitType.Diamondcrystal:
+                unitGO = diamondCrystalPrefab;
+                break;
+        }
+        
         Unit unit = Instantiate(unitGO).GetComponent<Unit>();
         moveUnitToTile(unit, tiles[xpos, ypos]);
         units.Add(unit);
