@@ -1,3 +1,7 @@
+using System;
+using DefaultNamespace;
+using Model;
+using Units.UnitLibrary;
 using UnityEngine;
 
 namespace Cards
@@ -13,24 +17,25 @@ namespace Cards
             useOnTile = true;
         }
         
-        public override bool isTileValid(Map map, Hero hero, Tile t)
+        public override bool isTileValid(Map map, UnitController hero, Tile t)
         {
-            Vector2 heroPos = map.getHeroPos();
-            Vector2 tilePos = map.getPosFromWorldPosition(t.transform.position);
+            Position heroPos = hero.getPosition();
+            Position tilePos = t.getPos();
             
-            Debug.Log("TILE POS: " + tilePos.x + ", " + tilePos.y);
-            
-            return Vector2.Distance(heroPos, tilePos) == 1;
+            return Position.Distance(heroPos, tilePos) == 1;
         }
         
-        protected override void effect(GameObject card, DeckManager deckManager, Map map, Hero hero, Tile t)
+        protected override void effect(GameObject card, DeckManager deckManager, Map map, UnitController hero, Tile t)
         {
-            var slash = GameObject.Instantiate(hero.slashPrefab, t.transform);
-            slash.transform.position = t.transform.position;
+            AnimationManager animationManager = GameObject.Find("AnimationManager").GetComponent<AnimationManager>();
+            animationManager.SpawnSpark(AnimationManager.Spark.Slash, map.tileToGlobalPos(t.getPos()));
             
             if (t.getUnit() != null)
             {
+                Debug.Log("DAMAGE");
                 t.getUnit().takeDamage(1);
+                
+                
             }
 
             card.GetComponent<Card>().discard();

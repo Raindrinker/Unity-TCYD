@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using Model;
+using Units.UnitLibrary;
 using UnityEngine;
 
-public class DiamondCrystal : Unit
+public class DiamondCrystal : UnitController
 {
     public GameObject floorWarningGO;
     public GameObject thunderGO;
@@ -16,8 +18,6 @@ public class DiamondCrystal : Unit
     public void Start()
     {
         base.Start();
-
-        health = 3;
     }
     
     public override void takeTurn()
@@ -37,7 +37,7 @@ public class DiamondCrystal : Unit
 
     private void prepareAttack()
     {
-        Vector2 heroPos = map.getHeroPos();
+        Position heroPos = map.getHeroPos();
         List<Tile> targetTiles = new List<Tile>();
 
         for (var i = -1; i <= 1; i++)
@@ -68,7 +68,7 @@ public class DiamondCrystal : Unit
         GameObject thunder = Instantiate(thunderGO, targetTile.transform);
         thunder.transform.position = targetTile.transform.position;
         
-        Unit unit = targetTile.getUnit();
+        UnitController unit = targetTile.getUnit();
         if (unit != null)
         {
             unit.takeDamage(1);

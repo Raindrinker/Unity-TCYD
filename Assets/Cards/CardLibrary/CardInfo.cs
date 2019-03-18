@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using DefaultNamespace;
+using Units.UnitLibrary;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Cards
@@ -22,7 +25,7 @@ namespace Cards
             return Resources.Load <Sprite> ("CardSprites/" + imageName);
         }
 
-        public virtual void use(GameObject card, DeckManager deckManager, Map map, Hero hero)
+        public virtual void use(GameObject card, DeckManager deckManager, Map map, UnitController hero)
         {
             Tile t;
             if (useOnTile)
@@ -42,12 +45,12 @@ namespace Cards
             }
         }
 
-        public virtual bool isTileValid(Map map, Hero hero, Tile t)
+        public virtual bool isTileValid(Map map, UnitController hero, Tile t)
         {
             return false;
         }
 
-        protected virtual void effect(GameObject card, DeckManager deckManager, Map map, Hero hero, Tile t)
+        protected virtual void effect(GameObject card, DeckManager deckManager, Map map, UnitController hero, Tile t)
         {
             Debug.Log("Use " + cardName);
         }

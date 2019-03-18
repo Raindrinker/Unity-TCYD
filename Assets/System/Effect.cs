@@ -2,17 +2,13 @@
 
 namespace System
 {
-    public class Effect : MonoBehaviour {
-    
-        void Start () {
-            
-            GameObject.Find("AnimationManager").GetComponent<AnimationManager>().addEffect(this);
-        }
+    public class Effect : MonoBehaviour
+    {
+        public float delay = 0.2f;
 
-        public void execute()
+        public virtual void execute()
         {
-            GetComponent<Animator>().SetBool("start", true);
-            Destroy (gameObject, GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length); 
+            
         }
     }
 }

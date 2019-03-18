@@ -5,13 +5,16 @@ namespace System
 {
     public class AnimationManager : MonoBehaviour
     {
+        public GameObject bonkPrefab;
+        public GameObject slashPrefab;
+        
         private List<Effect> effects = new List<Effect>();
 
-        private float delay = 0.1f;
         private float timer;
 
         public void addEffect(Effect e)
         {
+            Debug.Log("ADD EFFECT");
             effects.Add(e);
         }
 
@@ -19,10 +22,10 @@ namespace System
         {
             if (timer <= 0 && effects.Count > 0)
             {
-                Debug.Log("EFFECT");
                 effects[0].execute();
+                timer = effects[0].delay;
                 effects.RemoveAt(0);
-                timer = delay;
+                
             }
             else
             {
@@ -31,6 +34,35 @@ namespace System
                     timer -= Time.deltaTime;
                 }
             }
+        }
+
+        public enum Spark
+        {
+            Bonk,
+            Slash
+        }
+
+        public void SpawnSpark(Spark whichSpark, Vector2 pos)
+        {
+            EffectSpark spark = null;
+            
+            switch (whichSpark)
+            {
+                case Spark.Bonk:
+                    spark = Instantiate(bonkPrefab).GetComponent<EffectSpark>();
+                    break;
+                case Spark.Slash:
+                    spark = Instantiate(slashPrefab).GetComponent<EffectSpark>();
+                    break;
+            }
+
+            if (spark != null)
+            {
+                spark.transform.position = pos;
+                addEffect(spark);
+            }
+
+
         }
         
     }

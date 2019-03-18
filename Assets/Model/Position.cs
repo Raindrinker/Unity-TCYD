@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace Model
 {
     public struct Position
     {
@@ -17,6 +18,11 @@ namespace DefaultNamespace
         {
             x = (int) v.x;
             y = (int) v.y;
+        }
+
+        public static int Distance(Position pos1, Position pos2)
+        {
+            return Mathf.Abs(pos1.x - pos2.x) + Mathf.Abs(pos1.y - pos2.y);
         }
     }
 }

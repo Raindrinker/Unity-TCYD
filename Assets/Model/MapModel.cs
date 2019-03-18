@@ -1,24 +1,46 @@
-using Boo.Lang;
+using System.Collections.Generic;
+using Model;
 
 namespace DefaultNamespace
 {
     public class MapModel
     {
-        private int[,] tiles = new int[5,5];
+        private TileModel[,] tiles = new TileModel[5,5];
         private List<UnitModel> units = new List<UnitModel>();
+
+        private UnitModel hero;
 
         public MapModel()
         {
-            units.Add(new UnitModel(2, new Position(3, 3), UnitModel.UnitType.Diamondcrystal));
-            units.Add(new UnitModel(2, new Position(3, 4), UnitModel.UnitType.Diamondcrystal));
-            units.Add(new UnitModel(2, new Position(4, 3), UnitModel.UnitType.Diamondcrystal));
+            for(var i = 0; i < tiles.GetLength(0); i++)
+            {
+                for(var j = 0; j < tiles.GetLength(1); j++)
+                {
+                    var tileModel = new TileModel(new Position(i, j));
+                    tiles[i, j] = tileModel;
+                }
+            }
             
-            units.Add(new UnitModel(4, new Position(4, 0), UnitModel.UnitType.Slime));
+            
+            hero = new UnitModel(3, new Position(0, 2), UnitModel.UnitType.Hero, "Hero");
+            
+            units.Add(new UnitModel(4, new Position(3, 2), UnitModel.UnitType.Slime, "Slime"));
+            
         }
 
         public List<UnitModel> GetUnits()
         {
             return units;
+        }
+
+        public UnitModel GetHero()
+        {
+            return hero;
+        }
+
+        public TileModel GetTile(int x, int y)
+        {
+            return tiles[x, y];
         }
     }
 }

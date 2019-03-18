@@ -1,16 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using DefaultNamespace;
+using Model;
+using Units.UnitLibrary;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Tile : MonoBehaviour
 {
     private Map map;
     
     private bool active;
+
+    private TileModel tileModel;
     
-    private Unit unit = null;
+    private UnitController unit = null;
     
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,16 @@ public class Tile : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void setModel(TileModel tileModel)
+    {
+        this.tileModel = tileModel;
+    }
+
+    public Position getPos()
+    {
+        return tileModel.pos;
     }
 
     public void SetWorldPosition(Vector3 worldPos)
@@ -47,12 +58,12 @@ public class Tile : MonoBehaviour
         return unit == null;
     }
 
-    public void setUnit(Unit unit)
+    public void setUnit(UnitController unit)
     {
         this.unit = unit;
     }
 
-    public Unit getUnit()
+    public UnitController getUnit()
     {
         return unit;
     }

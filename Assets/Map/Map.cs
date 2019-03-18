@@ -2,29 +2,27 @@
 using System.Collections.Generic;
 using Cards;
 using DefaultNamespace;
+using Model;
+using Units;
+using Units.UnitLibrary;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Map : MonoBehaviour
-{
-
-    public GameObject heroPrefab;
-    public GameObject potPrefab;
-    public GameObject diamondCrystalPrefab;
-    public GameObject slimePrefab;
-    
+{   
     public GameObject floorTilePrefab;
+    public GameObject unitPrefab;
 
     private MapModel mapModel;
 
     private Tile[,] tiles = new Tile[5,5];
     private float tileSeparation = 3.0f;
     
-    private List<Unit> units = new List<Unit>();
+    private List<UnitController> units = new List<UnitController>();
 
-    private Hero hero;
+    private UnitHero hero;
 
     // Start is called before the first frame update
     void Start()
@@ -37,24 +35,30 @@ public class Map : MonoBehaviour
             {
                 var tile = Instantiate(floorTilePrefab, transform, true).GetComponent<Tile>();
                 
-                tile.SetWorldPosition(tileToPos(i, j));
+                tile.SetWorldPosition(tileToLocalPos(i, j));
+                tile.setModel(mapModel.GetTile(i, j));
                 tiles[i, j] = tile;
             }
         }
-    
-        hero = Instantiate(heroPrefab).GetComponent<Hero>();
-        moveUnitToTile(hero, tiles[0,2]);
 
-        foreach (UnitModel unitModel in mapModel.GetUnits())
-        {
-            spawnUnit(unitModel.type, unitModel.pos.x, unitModel.pos.y);
-        }
+        spawnHero();
+        spawnUnits();
         
     }
 
-    public Vector2 tileToPos(int xtile, int ytile)
+    public Vector2 tileToLocalPos(int xtile, int ytile)
     {
         return new Vector2(xtile * tileSeparation, -ytile * tileSeparation);
+    }
+    
+    public Vector2 tileToLocalPos(Position pos)
+    {
+        return tileToLocalPos(pos.x, pos.y);
+    }
+    
+    public Vector2 tileToGlobalPos(Position pos)
+    {
+        return tileToLocalPos(pos.x, pos.y) + (Vector2)transform.position;
     }
 
     public Tile getTile(int xpos, int ypos)
@@ -87,9 +91,9 @@ public class Map : MonoBehaviour
         return getTile((int)pos.x, (int)pos.y);
     }
 
-    public Vector2 getHeroPos()
+    public Position getHeroPos()
     {
-        return getPosFromWorldPosition(hero.transform.position);
+        return hero.getPosition();
     }
 
     public void HighlightValidTiles(CardInfo ci)
@@ -123,48 +127,75 @@ public class Map : MonoBehaviour
         }
     }
 
-    public void moveUnitToTile(Unit unit, Tile t)
+    public void moveUnitToTile(UnitController unit, Position pos)
     {
-        t.setUnit(unit);
-        if (unit.getTile() != null)
-        {
-            unit.getTile().setUnit(null);
-        }
-        unit.setTile(t);
+        Position unitPos = unit.getPosition();
+        tiles[unitPos.x, unitPos.y].setUnit(null);
+        unit.setPosition(pos);
+        tiles[pos.x, pos.y].setUnit(unit);
     }
 
-    public Hero getHero()
+    public UnitController getHero()
     {
         return hero;
     }
 
-    private void spawnUnit(UnitModel.UnitType type, int xpos, int ypos)
+    private void spawnHero()
     {
-        GameObject unitGO = potPrefab;
-        switch (type)
+        UnitModel unitModel = mapModel.GetHero();
+        
+        GameObject unitGO = Instantiate(unitPrefab, transform);
+        UnitHero unit;
+        unit = unitGO.AddComponent<UnitHero>();
+        
+        unit.setMap(this);
+        unit.setModel(unitModel);
+        hero = unit;
+        
+        tiles[unitModel.pos.x, unitModel.pos.y].setUnit(unit);
+    }
+
+    private void spawnUnits()
+    {
+        List<UnitModel> unitModels = mapModel.GetUnits();
+
+        for (int i = 0; i < unitModels.Count; i++)
+        {
+            spawnUnit(unitModels[i]);
+        }
+       
+    }
+
+    private void spawnUnit(UnitModel unitModel)
+    {
+        GameObject unitGO = Instantiate(unitPrefab, transform);
+        UnitController unit;
+        
+        switch (unitModel.type)
         {
             case UnitModel.UnitType.Slime:
-                unitGO = slimePrefab;
+                unit = unitGO.AddComponent<UnitSlime>();
                 break;
-            case UnitModel.UnitType.Diamondcrystal:
-                unitGO = diamondCrystalPrefab;
+            default:
+                unit = unitGO.AddComponent<UnitController>();
                 break;
         }
         
-        Unit unit = Instantiate(unitGO).GetComponent<Unit>();
-        moveUnitToTile(unit, tiles[xpos, ypos]);
+        unit.setMap(this);
+        unit.setModel(unitModel);  
         units.Add(unit);
+        
+        tiles[unitModel.pos.x, unitModel.pos.y].setUnit(unit);
     }
 
     public void takeUnitsTurn()
     {
         Debug.Log("Units turn, num units: " + units.Count);
         
-        foreach (Unit u in units)
+        foreach (UnitController u in units)
         {
             if (u != null)
             {
-                Debug.Log("UNIT");
                 u.takeTurn();
             }
         }

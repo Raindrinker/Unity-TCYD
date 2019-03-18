@@ -1,3 +1,6 @@
+using DefaultNamespace;
+using Model;
+using Units.UnitLibrary;
 using UnityEngine;
 
 namespace Cards
@@ -13,23 +16,25 @@ namespace Cards
             useOnTile = true;
         }
         
-        public override bool isTileValid(Map map, Hero hero, Tile t)
+        public override bool isTileValid(Map map, UnitController hero, Tile t)
         {
             if (!t.isWalkable())
             {
                 return false;
             }
+
+            Position heroPos = hero.getPosition();
+            Position tilePos = t.getPos();
             
-            Vector2 heroPos = map.getHeroPos();
-            Vector2 tilePos = map.getPosFromWorldPosition(t.transform.position);
-            
-            return Vector2.Distance(heroPos, tilePos) == 1;
+            return Position.Distance(heroPos, tilePos) == 1;
            
         }
         
-        protected override void effect(GameObject card, DeckManager deckManager, Map map, Hero hero, Tile t)
+        protected override void effect(GameObject card, DeckManager deckManager, Map map, UnitController hero, Tile t)
         {
-            map.moveUnitToTile(hero, t);
+            Vector2 tilePos = map.getPosFromWorldPosition(t.transform.position);
+            
+            map.moveUnitToTile(hero, new Position((int)tilePos.x, (int)tilePos.y));
 
             card.GetComponent<Card>().discard();
         }
