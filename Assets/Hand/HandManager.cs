@@ -10,11 +10,14 @@ namespace Hand
         private bool[] slots = new bool[3];
 
         private DeckManager deckManager;
+        private Arrow arrow;
         
         // Start is called before the first frame update
         void Start()
         {
             deckManager = GameObject.Find("DeckManager").GetComponent<DeckManager>();
+            arrow = GameObject.Find("Arrow").GetComponent<Arrow>();
+            arrow.setActive(false);
         }
 
         // Update is called once per frame
@@ -27,6 +30,16 @@ namespace Hand
                     drawCard();
                 }
             }
+        }
+        
+        public void setArrow(Vector2 start, Vector2 end)
+        {
+            arrow.setArrow(start, end);
+        }
+
+        public void setArrowActive(bool active)
+        {
+            arrow.setActive(active);
         }
 
         public void drawCard()

@@ -73,7 +73,7 @@ public class Map : MonoBehaviour
         return null;
     }
 
-    public Vector2 getPosFromWorldPosition(Vector2 worldPos)
+    public Position getPosFromWorldPosition(Vector2 worldPos)
     {
         float xposmap = worldPos.x - transform.position.x + tileSeparation/2;
         float yposmap = worldPos.y - transform.position.y - tileSeparation/2;
@@ -81,14 +81,14 @@ public class Map : MonoBehaviour
         int xpos = (int)(xposmap / tileSeparation);
         int ypos = (int)(yposmap / -tileSeparation);
     
-        return new Vector2(xpos, ypos);
+        return new Position(xpos, ypos);
     }
 
     public Tile getTileFromWorldPosition(Vector2 worldPos)
     {
-        Vector2 pos = getPosFromWorldPosition(worldPos);
+        Position pos = getPosFromWorldPosition(worldPos);
 
-        return getTile((int)pos.x, (int)pos.y);
+        return getTile(pos.x, pos.y);
     }
 
     public Position getHeroPos()
@@ -176,6 +176,9 @@ public class Map : MonoBehaviour
             case UnitModel.UnitType.Slime:
                 unit = unitGO.AddComponent<UnitSlime>();
                 break;
+            case UnitModel.UnitType.Diamondcrystal:
+                unit = unitGO.AddComponent<UnitDiamondCrystal>();
+                break;
             default:
                 unit = unitGO.AddComponent<UnitController>();
                 break;
@@ -190,15 +193,26 @@ public class Map : MonoBehaviour
 
     public void takeUnitsTurn()
     {
-        Debug.Log("Units turn, num units: " + units.Count);
-        
+        for (var i = 0; i < tiles.GetLength(0); i++)
+        {
+            for (var j = 0; j < tiles.GetLength(1); j++)
+            {
+                tiles[i, j].clearThreaten();
+            }
+        }
+
         foreach (UnitController u in units)
         {
             if (u != null)
             {
-                u.takeTurn();
+                if (u.getModel().alive)
+                {
+                    u.takeTurn();
+                }
             }
         }
+
+        
     }
 }
 

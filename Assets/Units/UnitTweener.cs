@@ -53,6 +53,17 @@ namespace Units.UnitLibrary
             animationManager.addEffect(effectTween);
         }
 
+        public void addTweenDeath()
+        {
+            EffectDeath effectDeath = gameObject.AddComponent<EffectDeath>();
+            animationManager.addEffect(effectDeath);
+        }
+
+        public void Death()
+        {
+            gameObject.SetActive(false);
+        }
+
         public GameObject GetUnitView()
         {
             return unitView;

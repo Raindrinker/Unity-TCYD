@@ -26,6 +26,10 @@ namespace DefaultNamespace
             
             units.Add(new UnitModel(4, new Position(3, 2), UnitModel.UnitType.Slime, "Slime"));
             
+            units.Add(new UnitModel(3, new Position(4, 4), UnitModel.UnitType.Diamondcrystal, "DiamondCrystal"));
+            units.Add(new UnitModel(3, new Position(4, 3), UnitModel.UnitType.Diamondcrystal, "DiamondCrystal"));
+            units.Add(new UnitModel(3, new Position(3, 4), UnitModel.UnitType.Diamondcrystal, "DiamondCrystal"));
+            
         }
 
         public List<UnitModel> GetUnits()

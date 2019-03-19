@@ -32,9 +32,9 @@ namespace Cards
         
         protected override void effect(GameObject card, DeckManager deckManager, Map map, UnitController hero, Tile t)
         {
-            Vector2 tilePos = map.getPosFromWorldPosition(t.transform.position);
+            Position tilePos = map.getPosFromWorldPosition(t.transform.position);
             
-            map.moveUnitToTile(hero, new Position((int)tilePos.x, (int)tilePos.y));
+            map.moveUnitToTile(hero, tilePos);
 
             card.GetComponent<Card>().discard();
         }

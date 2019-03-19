@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Units.UnitLibrary
 {
-    public class UnitSlime : UnitController
+    public class UnitSlime : UnitEnemy
     {
         
         enum State {IDLE, ATTACKING};
@@ -17,15 +17,17 @@ namespace Units.UnitLibrary
         {
             base.Start();
             
-            slimePrefab = Resources.Load("UnitPrefabs/SlimeResources/Slime") as GameObject;
+            slimePrefab = Resources.Load("UnitPrefabs/Slime/Slime") as GameObject;
             createView(slimePrefab);
         }
 
         public override void takeTurn()
         {
             base.takeTurn();
-
+            
             State state = (State)unitModel.state;
+            
+            Debug.Log("ALIVE: " + unitModel.alive);
         
             switch (state)
             {
@@ -41,22 +43,23 @@ namespace Units.UnitLibrary
         private void prepareAttack()
         {
             Position heroPos = map.getHeroPos();
-            Vector2 myPos = map.getPosFromWorldPosition(transform.position);
+            Position myPos = map.getPosFromWorldPosition(transform.position);
             targetTile = null;
         
             if (myPos.x == heroPos.x)
             {
-                targetTile = map.getTile((int)myPos.x, (int)(myPos.y + Mathf.Sign(heroPos.y - myPos.y)));
+                targetTile = map.getTile(myPos.x, (int)(myPos.y + Mathf.Sign(heroPos.y - myPos.y)));
             }
         
             if (myPos.y == heroPos.y)
             {
-                targetTile = map.getTile((int)(myPos.x + Mathf.Sign(heroPos.x - myPos.x)), (int)myPos.y);
+                targetTile = map.getTile((int)(myPos.x + Mathf.Sign(heroPos.x - myPos.x)), myPos.y);
             }
 
             if (targetTile != null)
             {
                 unitModel.state = (int)State.ATTACKING;
+                targetTile.Treathen();
                 unitTweener.GetUnitView().GetComponent<Animator>().SetBool("attacking", true);
             }
         }

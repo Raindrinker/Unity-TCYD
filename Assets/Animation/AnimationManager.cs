@@ -7,6 +7,7 @@ namespace System
     {
         public GameObject bonkPrefab;
         public GameObject slashPrefab;
+        public GameObject blueBoltPrefab;
         
         private List<Effect> effects = new List<Effect>();
 
@@ -39,7 +40,8 @@ namespace System
         public enum Spark
         {
             Bonk,
-            Slash
+            Slash,
+            BlueBolt
         }
 
         public void SpawnSpark(Spark whichSpark, Vector2 pos)
@@ -53,6 +55,9 @@ namespace System
                     break;
                 case Spark.Slash:
                     spark = Instantiate(slashPrefab).GetComponent<EffectSpark>();
+                    break;
+                case Spark.BlueBolt:
+                    spark = Instantiate(blueBoltPrefab).GetComponent<EffectSpark>();
                     break;
             }
 

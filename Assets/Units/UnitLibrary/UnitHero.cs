@@ -11,7 +11,7 @@ namespace Units.UnitLibrary
         {
             base.Start();
             
-            heroPrefab = Resources.Load("UnitPrefabs/HeroResources/Hero") as GameObject;
+            heroPrefab = Resources.Load("UnitPrefabs/Hero/Hero") as GameObject;
             createView(heroPrefab);
         }
 

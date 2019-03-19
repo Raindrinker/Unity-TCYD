@@ -12,7 +12,8 @@ namespace DefaultNamespace
             Slime,
             Diamondcrystal
         }
-        
+
+        public bool alive = true;
         public int maxhp;
         public int hp;
         public Position pos;

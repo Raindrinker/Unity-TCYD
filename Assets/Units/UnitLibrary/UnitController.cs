@@ -13,19 +13,26 @@ namespace Units.UnitLibrary
         protected Map map;
         protected AnimationManager animationManager;
         
-        protected System.Random rand = new System.Random();
+        protected System.Random rand = new System.Random((int)System.DateTime.Now.Ticks);
 
         public void Start()
         {
             animationManager = GameObject.Find("AnimationManager").GetComponent<AnimationManager>();
             unitTweener = GetComponent<UnitTweener>();
+            
         }
         
-        public void setModel(UnitModel unitModel)
+        public virtual void setModel(UnitModel unitModel)
         {
             Debug.Log("SET MODEL");
             this.unitModel = unitModel;
             transform.localPosition = map.tileToLocalPos(unitModel.pos.x, unitModel.pos.y);
+           
+        }
+
+        public UnitModel getModel()
+        {
+            return unitModel;
         }
 
         public void setMap(Map map)
@@ -48,7 +55,11 @@ namespace Units.UnitLibrary
     
         public virtual void takeTurn()
         {
-
+            if (!unitModel.alive)
+            {
+                return;
+            }
+            
             Debug.Log("Unit " + unitModel.name + " takes turn");
 
         }
@@ -57,6 +68,14 @@ namespace Units.UnitLibrary
         {
             unitModel.hp -= dmg;
             unitTweener.addTweenShake();
+            if (unitModel.hp <= 0)
+            {
+                Debug.Log("DESTROY");
+                unitModel.alive = false;
+                
+                
+                unitTweener.addTweenDeath();
+            }
             
         }
 

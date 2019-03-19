@@ -76,6 +76,7 @@ public class Card : MonoBehaviour
             }
             
             active = false;
+            handManager.setArrowActive(false);
         }
 
         if (active)
@@ -100,6 +101,12 @@ public class Card : MonoBehaviour
 
         timer = Mathf.Min(timer + Time.deltaTime, 10.0f);
 
+        if (active)
+        {
+            Vector2 arrowStart = new Vector2(cardImg.transform.position.x, cardImg.transform.position.y + 2);
+            handManager.setArrow(arrowStart, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        }
+
     }
 
     private void OnMouseDown()
@@ -115,6 +122,7 @@ public class Card : MonoBehaviour
 
             active = true;
             timer = 0.0f;
+            handManager.setArrowActive(true);
         }
     }
 
