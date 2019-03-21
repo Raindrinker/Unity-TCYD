@@ -22,13 +22,17 @@ namespace DefaultNamespace
             }
             
             
-            hero = new UnitModel(3, new Position(0, 2), UnitModel.UnitType.Hero, "Hero");
+            hero = new UnitModel(3, new Position(2, 4), UnitModel.UnitType.Hero, "Hero");
             
-            units.Add(new UnitModel(4, new Position(3, 2), UnitModel.UnitType.Slime, "Slime"));
+            units.Add(new UnitModel(5, new Position(1, 1), UnitModel.UnitType.QueenHeart, "Heart"));
+            units.Add(new UnitModel(3, new Position(2, 1), UnitModel.UnitType.CardiacMonarch, "Queen"));
+            units.Add(new UnitModel(5, new Position(3, 1), UnitModel.UnitType.QueenHeart, "Heart"));
+            
+            /*units.Add(new UnitModel(4, new Position(3, 2), UnitModel.UnitType.Slime, "Slime"));
             
             units.Add(new UnitModel(3, new Position(4, 4), UnitModel.UnitType.Diamondcrystal, "DiamondCrystal"));
             units.Add(new UnitModel(3, new Position(4, 3), UnitModel.UnitType.Diamondcrystal, "DiamondCrystal"));
-            units.Add(new UnitModel(3, new Position(3, 4), UnitModel.UnitType.Diamondcrystal, "DiamondCrystal"));
+            units.Add(new UnitModel(3, new Position(3, 4), UnitModel.UnitType.Diamondcrystal, "DiamondCrystal"));*/
             
         }
 

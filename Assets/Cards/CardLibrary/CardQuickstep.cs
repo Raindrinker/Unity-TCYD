@@ -23,7 +23,7 @@ namespace Cards
                 return false;
             }
 
-            Position heroPos = hero.getPosition();
+            Position heroPos = hero.getPos();
             Position tilePos = t.getPos();
             
             return Position.Distance(heroPos, tilePos) == 1;

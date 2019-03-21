@@ -48,7 +48,7 @@ namespace Units.UnitLibrary
             
         }
         
-        public Position getPosition()
+        public Position getPos()
         {
             return unitModel.pos;
         }

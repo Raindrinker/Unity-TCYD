@@ -19,7 +19,7 @@ namespace Cards
         
         public override bool isTileValid(Map map, UnitController hero, Tile t)
         {
-            Position heroPos = hero.getPosition();
+            Position heroPos = hero.getPos();
             Position tilePos = t.getPos();
             
             return Position.Distance(heroPos, tilePos) == 1;

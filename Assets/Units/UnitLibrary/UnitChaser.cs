@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using Model;
 using UnityEngine;
 
 namespace Units.UnitLibrary
 {
-    public class UnitSlime : UnitEnemy
+    public class UnitChaser : UnitEnemy
     {
         
         enum State {IDLE, ATTACKING};
@@ -42,23 +43,59 @@ namespace Units.UnitLibrary
         {
             Position heroPos = map.getHeroPos();
             Position myPos = getPos();
+            
             targetTile = null;
-        
-            if (myPos.x == heroPos.x)
+
+
+            var targetTileOptions = new List<Tile>();
+            var targetTileDistToPlayer = 1000;
+
+            for (var i = -1; i <= 1; i ++)
             {
-                targetTile = map.getTile(myPos.x, (int)(myPos.y + Mathf.Sign(heroPos.y - myPos.y)));
+                for (var j = -1; j <= 1; j ++)
+                {
+                    if (i != 0 && j != 0) continue;
+                    
+                    var t = map.getTile(getPos().x + i, getPos().y + j);
+                    if (t != null)
+                    {
+                        if (t.isWalkable())
+                        {
+
+                            var distToPlayer = Position.Distance(heroPos, t.getPos());
+                            if (distToPlayer < targetTileDistToPlayer)
+                            {
+                                targetTileOptions.Clear();
+                                targetTileOptions.Add(t);
+                                targetTileDistToPlayer = distToPlayer;
+                            }
+                            if (distToPlayer == targetTileDistToPlayer)
+                            {
+                                targetTileOptions.Add(t);
+                            }
+                        }
+
+                        if (t.getPos().Equals(heroPos))
+                        {
+                            targetTileOptions.Clear();
+                            targetTile = t;
+                            targetTileDistToPlayer = 0;
+                        }
+                    }
+                    
+                }
             }
-        
-            if (myPos.y == heroPos.y)
+
+            if (targetTileOptions.Count > 0)
             {
-                targetTile = map.getTile((int)(myPos.x + Mathf.Sign(heroPos.x - myPos.x)), myPos.y);
+                int choice = rand.Next(targetTileOptions.Count);
+                targetTile = targetTileOptions[choice];
             }
 
             if (targetTile != null)
             {
                 unitModel.state = (int)State.ATTACKING;
                 targetTile.Treathen();
-                unitTweener.GetUnitView().GetComponent<Animator>().SetBool("attacking", true);
             }
         }
 
@@ -87,8 +124,6 @@ namespace Units.UnitLibrary
             }
 
             unitModel.state = (int)State.IDLE;
-        
-            unitTweener.GetUnitView().GetComponent<Animator>().SetBool("attacking", false);
             
         }
     }

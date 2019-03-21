@@ -10,7 +10,10 @@ namespace DefaultNamespace
             Hero,
             Pot,
             Slime,
-            Diamondcrystal
+            Diamondcrystal,
+            Chaser,
+            QueenHeart,
+            CardiacMonarch
         }
 
         public bool alive = true;

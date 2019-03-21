@@ -93,7 +93,7 @@ public class Map : MonoBehaviour
 
     public Position getHeroPos()
     {
-        return hero.getPosition();
+        return hero.getPos();
     }
 
     public void HighlightValidTiles(CardInfo ci)
@@ -129,7 +129,7 @@ public class Map : MonoBehaviour
 
     public void moveUnitToTile(UnitController unit, Position pos)
     {
-        Position unitPos = unit.getPosition();
+        Position unitPos = unit.getPos();
         tiles[unitPos.x, unitPos.y].setUnit(null);
         unit.setPosition(pos);
         tiles[pos.x, pos.y].setUnit(unit);
@@ -178,6 +178,15 @@ public class Map : MonoBehaviour
                 break;
             case UnitModel.UnitType.Diamondcrystal:
                 unit = unitGO.AddComponent<UnitDiamondCrystal>();
+                break;
+            case UnitModel.UnitType.Chaser:
+                unit = unitGO.AddComponent<UnitChaser>();
+                break;
+            case UnitModel.UnitType.QueenHeart:
+                unit = unitGO.AddComponent<UnitQueenHeart>();
+                break;
+            case UnitModel.UnitType.CardiacMonarch:
+                unit = unitGO.AddComponent<UnitCardiacMonarch>();
                 break;
             default:
                 unit = unitGO.AddComponent<UnitController>();
