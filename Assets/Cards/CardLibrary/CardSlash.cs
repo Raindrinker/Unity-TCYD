@@ -29,6 +29,7 @@ namespace Cards
         {
             AnimationManager animationManager = GameObject.Find("AnimationManager").GetComponent<AnimationManager>();
             animationManager.SpawnSpark(AnimationManager.Spark.Slash, map.tileToGlobalPos(t.getPos()));
+            GameObject.Find("AudioManager").GetComponent<AudioManager>().playClip("slash");
             
             if (t.getUnit() != null)
             {

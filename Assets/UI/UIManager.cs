@@ -60,6 +60,7 @@ public class UIManager : MonoBehaviour
     private void OnDeckButtonClick()
     {
         SetShowDeck(!showDeck);
+        GameObject.Find("MusicManager").GetComponent<MusicManager>().setOccluded(showDeck);
     }
 
     public bool isShowingUI()

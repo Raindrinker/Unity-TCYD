@@ -58,6 +58,8 @@ namespace Hand
                     break;
                 }
             }
+            
+            GameObject.Find("AudioManager").GetComponent<AudioManager>().playClip("cardset");
         }
 
         public void discardCard(int which, Card card)
