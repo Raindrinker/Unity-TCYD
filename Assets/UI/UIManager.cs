@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
     private bool showDeck = false;
     private DeckViewer deckViewer;
     private Button deckButton;
+
+    private BattleUI battleUI;
     
     // Start is called before the first frame update
     void Start()
@@ -22,6 +24,8 @@ public class UIManager : MonoBehaviour
         deckButton = GameObject.Find("DeckButton").GetComponent<Button>();
         deckViewer.SetVisible(showDeck);
         deckButton.onClick.AddListener(OnDeckButtonClick);
+        
+        battleUI = GameObject.Find("BattleUI").GetComponent<BattleUI>();
     }
 
     // Update is called once per frame
@@ -55,6 +59,11 @@ public class UIManager : MonoBehaviour
     {
         //showCard = false;
         //cardViewer.SetVisible(showCard);
+    }
+
+    public void SetHp(int hp, int maxhp)
+    {
+        battleUI.SetHp(hp, maxhp);
     }
 
     private void OnDeckButtonClick()

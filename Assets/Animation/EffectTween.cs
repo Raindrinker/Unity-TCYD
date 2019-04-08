@@ -15,6 +15,8 @@ namespace System
         {
             Debug.Log("Execute tween");
             
+            Debug.Log("Tween end pos: " + tween.endVector);
+            
             tween.Begin(); 
             Destroy(this);
         }

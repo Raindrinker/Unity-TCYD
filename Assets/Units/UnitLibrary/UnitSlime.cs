@@ -9,7 +9,7 @@ namespace Units.UnitLibrary
         
         enum State {IDLE, ATTACKING};
 
-        private Tile targetTile;
+        private Position intendedMove;
 
         private GameObject slimePrefab;
 
@@ -42,7 +42,7 @@ namespace Units.UnitLibrary
         {
             Position heroPos = map.getHeroPos();
             Position myPos = getPos();
-            targetTile = null;
+            Tile targetTile = null;
         
             if (myPos.x == heroPos.x)
             {
@@ -57,13 +57,16 @@ namespace Units.UnitLibrary
             if (targetTile != null)
             {
                 unitModel.state = (int)State.ATTACKING;
-                targetTile.Treathen();
+                intendedMove = targetTile.getPos() - myPos;
                 unitTweener.GetUnitView().GetComponent<Animator>().SetBool("attacking", true);
+                targetTile.TreathenWithDirection(intendedMove);
             }
         }
 
         private void doAttack()
         {
+            Tile targetTile = map.getTile(getPos() + intendedMove);
+            
             if (targetTile != null)
             {
 
@@ -72,7 +75,8 @@ namespace Units.UnitLibrary
 
                 if (heroPos.Equals(targetTilePos))
                 {
-                    animationManager.SpawnSpark(AnimationManager.Spark.Bonk, map.tileToGlobalPos(targetTilePos));
+                    EffectSpark spark = animationManager.SpawnSpark(AnimationManager.Spark.Bonk, map.tileToGlobalPos(targetTilePos));
+                    spark.setSoundEffect("whack");
                     map.getHero().takeDamage(1);
                 }
                 else
@@ -82,8 +86,6 @@ namespace Units.UnitLibrary
                         map.moveUnitToTile(this, new Position((int)targetTilePos.x, (int)targetTilePos.y));
                     }
                 }
-
-                targetTile = null;
             }
 
             unitModel.state = (int)State.IDLE;

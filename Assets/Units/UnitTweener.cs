@@ -20,6 +20,8 @@ namespace Units.UnitLibrary
             wrapper = transform.Find("UnitTweenWrapper");
             
             tweenMove = gameObject.AddComponent<TweenTransforms>();
+            tweenMove.myTweenType = TweenBase.playStyles.Single;
+            tweenMove.TweenTransformProperty = TweenTransforms.TransformTypes.Position;
         }
 
         public void setUnitPrefab(GameObject unitViewPrefab)
@@ -27,16 +29,12 @@ namespace Units.UnitLibrary
             unitView = Instantiate(unitViewPrefab, wrapper);
         }
 
-        public void addTweenMove(Vector2 pos)
+        public void addTweenMove(Vector2 startPos, Vector2 endPos)
         {
-            tweenMove.myTweenType = TweenBase.playStyles.Single;
-            tweenMove.TweenTransformProperty = TweenTransforms.TransformTypes.LocalPosition;
-            tweenMove.startingVector = transform.localPosition;
-            tweenMove.endVector = pos;
-            tweenMove.duration = 0.2f;
 
-            EffectTween effectTween = gameObject.AddComponent<EffectTween>();
+            EffectTweenMove effectTween = gameObject.AddComponent<EffectTweenMove>();
             effectTween.setTween(tweenMove);
+            effectTween.setMove(startPos, endPos);
             
             animationManager.addEffect(effectTween);
         }

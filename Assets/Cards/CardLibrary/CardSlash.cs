@@ -28,15 +28,18 @@ namespace Cards
         protected override void effect(GameObject card, DeckManager deckManager, Map map, UnitController hero, Tile t)
         {
             AnimationManager animationManager = GameObject.Find("AnimationManager").GetComponent<AnimationManager>();
-            animationManager.SpawnSpark(AnimationManager.Spark.Slash, map.tileToGlobalPos(t.getPos()));
-            GameObject.Find("AudioManager").GetComponent<AudioManager>().playClip("slash");
+            EffectSpark spark = animationManager.SpawnSpark(AnimationManager.Spark.Slash, map.tileToGlobalPos(t.getPos()));
+            
             
             if (t.getUnit() != null)
             {
                 Debug.Log("DAMAGE");
                 t.getUnit().takeDamage(1);
-                
-                
+                spark.setSoundEffect("slash");
+            }
+            else
+            {
+                spark.setSoundEffect("whiff");
             }
 
             card.GetComponent<Card>().discard();

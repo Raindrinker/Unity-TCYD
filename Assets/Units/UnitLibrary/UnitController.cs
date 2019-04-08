@@ -43,8 +43,9 @@ namespace Units.UnitLibrary
         
         public void setPosition(Position pos)
         {
+            
+            unitTweener.addTweenMove(map.tileToGlobalPos(unitModel.pos), map.tileToGlobalPos(pos));
             unitModel.pos = pos;
-            unitTweener.addTweenMove(map.tileToLocalPos(pos.x, pos.y));
             
         }
         
@@ -72,9 +73,11 @@ namespace Units.UnitLibrary
             {
                 Debug.Log("DESTROY");
                 unitModel.alive = false;
-                
+                map.getTile(getPos()).setUnit(null);
                 
                 unitTweener.addTweenDeath();
+                
+                map.checkLevelEnd();
             }
             
         }

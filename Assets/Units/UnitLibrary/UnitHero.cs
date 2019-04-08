@@ -14,6 +14,13 @@ namespace Units.UnitLibrary
             heroPrefab = Resources.Load("UnitPrefabs/Hero/Hero") as GameObject;
             createView(heroPrefab);
         }
+        
+        public override void takeDamage(int dmg)
+        {
+            base.takeDamage(dmg);
+            
+            GameObject.Find("UI").GetComponent<UIManager>().SetHp(unitModel.hp, unitModel.maxhp);
+        }
 
     }
 }

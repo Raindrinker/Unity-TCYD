@@ -7,6 +7,7 @@ using Units;
 using Units.UnitLibrary;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -72,6 +73,18 @@ public class Map : MonoBehaviour
 
         return null;
     }
+    
+    public Tile getTile(Position pos)
+    {
+        if (pos.x < tiles.GetLength(0) && pos.x >= 0)
+        {
+            if (pos.y < tiles.GetLength(1) && pos.y >= 0) {
+                return tiles[pos.x, pos.y];
+            }
+        }
+
+        return null;
+    }
 
     public Position getPosFromWorldPosition(Vector2 worldPos)
     {
@@ -129,10 +142,16 @@ public class Map : MonoBehaviour
 
     public void moveUnitToTile(UnitController unit, Position pos)
     {
-        Position unitPos = unit.getPos();
-        tiles[unitPos.x, unitPos.y].setUnit(null);
-        unit.setPosition(pos);
-        tiles[pos.x, pos.y].setUnit(unit);
+        if (getTile(pos) != null)
+        {
+            if (getTile(pos).getUnit() == null)
+            {
+                Position unitPos = unit.getPos();
+                tiles[unitPos.x, unitPos.y].setUnit(null);
+                unit.setPosition(pos);
+                tiles[pos.x, pos.y].setUnit(unit);
+            }
+        }
     }
 
     public UnitController getHero()
@@ -220,8 +239,27 @@ public class Map : MonoBehaviour
                 }
             }
         }
+    }
 
+    public void checkLevelEnd()
+    {
+        bool alldead = true;
         
+        for (var i = 0; i < units.Count; i++)
+        {
+            UnitController unit = units[i];
+
+            if (unit.getModel().alive)
+            {
+                alldead = false;
+            }
+            
+        }
+
+        if (alldead)
+        {
+            SceneManager.LoadScene("SampleScene");
+        }
     }
 }
 

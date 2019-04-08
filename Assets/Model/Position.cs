@@ -24,5 +24,20 @@ namespace Model
         {
             return Mathf.Abs(pos1.x - pos2.x) + Mathf.Abs(pos1.y - pos2.y);
         }
+        
+        public static Position operator +(Position p1, Position p2) 
+        {
+            return new Position(p1.x + p2.x, p1.y + p2.y);
+        }
+        
+        public static Position operator -(Position p1, Position p2) 
+        {
+            return new Position(p1.x - p2.x, p1.y - p2.y);
+        }
+        
+        public static Position operator *(Position p1, int i) 
+        {
+            return new Position(p1.x * i, p1.y * i);
+        }
     }
 }

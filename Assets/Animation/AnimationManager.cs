@@ -15,7 +15,6 @@ namespace System
 
         public void addEffect(Effect e)
         {
-            Debug.Log("ADD EFFECT");
             effects.Add(e);
         }
 
@@ -44,7 +43,7 @@ namespace System
             BlueBolt
         }
 
-        public void SpawnSpark(Spark whichSpark, Vector2 pos)
+        public EffectSpark SpawnSpark(Spark whichSpark, Vector2 pos)
         {
             EffectSpark spark = null;
             
@@ -66,6 +65,8 @@ namespace System
                 spark.transform.position = pos;
                 addEffect(spark);
             }
+
+            return spark;
 
 
         }
